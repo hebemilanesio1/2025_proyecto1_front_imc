@@ -10,7 +10,11 @@ interface ImcHistorialItem {
   fecha: string;
 }
 
-const ImcHistorial: React.FC = () => {
+interface ImcHistorialProps {
+  actualizar: boolean; // prop que indica que hay un nuevo cálculo
+}
+
+const ImcHistorial: React.FC<ImcHistorialProps> = ({ actualizar }) => {
   const [historial, setHistorial] = useState<ImcHistorialItem[]>([]);
 
   const fetchHistorial = async () => {
@@ -24,7 +28,7 @@ const ImcHistorial: React.FC = () => {
 
   useEffect(() => {
     fetchHistorial();
-  }, []);
+  }, [actualizar]); // se vuelve a llamar cuando 'actualizar' cambia
 
   return (
     <div className="card historial-card">

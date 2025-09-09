@@ -5,12 +5,17 @@ import ImcHistorial from "./ImcHistorial";
 const App: React.FC = () => {
   const [actualizarHistorial, setActualizarHistorial] = useState(false);
 
+  const handleCalculoExitoso = () => {
+    setActualizarHistorial(prev => !prev); // alterna para indicar nueva actualización
+  };
+
   return (
     <div className="app-container">
-      <ImcForm onCalculoExitoso={() => setActualizarHistorial(prev => !prev)} />
-      <ImcHistorial key={actualizarHistorial ? 1 : 0} />
+      <ImcForm onCalculoExitoso={handleCalculoExitoso} />
+      <ImcHistorial actualizar={actualizarHistorial} />
     </div>
   );
 };
 
 export default App;
+

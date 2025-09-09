@@ -8,14 +8,14 @@ interface ImcResult {
 }
 
 interface ImcFormProps {
-  onCalculoExitoso?: () => void; // callback opcional
+  onCalculoExitoso?: () => void;
 }
 
 const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
-  const [altura, setAltura] = useState("");
-  const [peso, setPeso] = useState("");
+  const [altura, setAltura] = useState<string>("");
+  const [peso, setPeso] = useState<string>("");
   const [resultado, setResultado] = useState<ImcResult | null>(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +36,8 @@ const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
       setAltura("");
       setPeso("");
 
-      if (onCalculoExitoso) onCalculoExitoso(); // avisar que hay un nuevo cálculo
-    } catch (err) {
+      if (onCalculoExitoso) onCalculoExitoso();
+    } catch (err: unknown) {
       console.error(err);
       setError("❌ Error al calcular el IMC. Verifica si el backend está corriendo.");
       setResultado(null);
@@ -92,4 +92,3 @@ const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
 };
 
 export default ImcForm;
-
