@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import "./index.css"; 
-import { api } from "./api"; // 👈 importamos la config de API
+import "./index.css";
+import { api } from "./api";
 
 interface ImcResult {
   imc: number;
   categoria: string;
 }
 
-function ImcForm() {
+interface ImcFormProps {
+  onCalculoExitoso?: () => void; // callback opcional
+}
+
+const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
   const [altura, setAltura] = useState("");
   const [peso, setPeso] = useState("");
   const [resultado, setResultado] = useState<ImcResult | null>(null);
@@ -26,12 +30,13 @@ function ImcForm() {
     }
 
     try {
-      const response = await api.post("/imc/calcular", {  // 👈 usamos api
-        altura: alturaNum,
-        peso: pesoNum,
-      });
+      const response = await api.post("/imc/calcular", { altura: alturaNum, peso: pesoNum });
       setResultado(response.data);
       setError("");
+      setAltura("");
+      setPeso("");
+
+      if (onCalculoExitoso) onCalculoExitoso(); // avisar que hay un nuevo cálculo
     } catch (err) {
       console.error(err);
       setError("❌ Error al calcular el IMC. Verifica si el backend está corriendo.");
@@ -84,6 +89,7 @@ function ImcForm() {
       </div>
     </div>
   );
-}
+};
 
 export default ImcForm;
+
