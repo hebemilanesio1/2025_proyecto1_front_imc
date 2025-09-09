@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import ImcForm from "./ImcForm";
-import ImcHistorial from "./ImcHistorial";
 
-const App: React.FC = () => {
-  const [actualizarHistorial, setActualizarHistorial] = useState(false);
+import ImcForm from './ImcForm'
 
-  const handleCalculoExitoso = () => {
-    setActualizarHistorial(prev => !prev); // alterna para indicar nueva actualización
-  };
+function App() {
 
   return (
-    <div className="app-container">
-      <ImcForm onCalculoExitoso={handleCalculoExitoso} />
-      <ImcHistorial actualizar={actualizarHistorial} />
+    <>
+     <div>
+      <ImcForm />
     </div>
-  );
-};
+    </>
+  )
+}
 
-export default App;
-
+export default App

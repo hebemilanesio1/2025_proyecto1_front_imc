@@ -1,21 +1,17 @@
 import React, { useState } from "react";
-import "./index.css";
-import { api } from "./api";
+import "./index.css"; 
+import { api } from "./api"; 
 
 interface ImcResult {
   imc: number;
   categoria: string;
 }
 
-interface ImcFormProps {
-  onCalculoExitoso?: () => void;
-}
-
-const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
-  const [altura, setAltura] = useState<string>("");
-  const [peso, setPeso] = useState<string>("");
+function ImcForm() {
+  const [altura, setAltura] = useState("");
+  const [peso, setPeso] = useState("");
   const [resultado, setResultado] = useState<ImcResult | null>(null);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,20 +20,19 @@ const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
     const pesoNum = parseFloat(peso);
 
     if (isNaN(alturaNum) || isNaN(pesoNum) || alturaNum <= 0 || pesoNum <= 0) {
-      setError("⚠️ Ingresa valores válidos (positivos y numéricos).");
+      setError("⚠ Ingresa valores válidos (positivos y numéricos).");
       setResultado(null);
       return;
     }
 
     try {
-      const response = await api.post("/imc/calcular", { altura: alturaNum, peso: pesoNum });
+      const response = await api.post("/imc/calcular", {
+        altura: alturaNum,
+        peso: pesoNum,
+      });
       setResultado(response.data);
       setError("");
-      setAltura("");
-      setPeso("");
-
-      if (onCalculoExitoso) onCalculoExitoso();
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
       setError("❌ Error al calcular el IMC. Verifica si el backend está corriendo.");
       setResultado(null);
@@ -89,6 +84,6 @@ const ImcForm: React.FC<ImcFormProps> = ({ onCalculoExitoso }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ImcForm;
